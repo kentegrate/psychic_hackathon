@@ -56,29 +56,9 @@ class ImageConverter:
         self.image_pub.publish(self.bridge.cv2_to_imgmsg(cv_img, "bgr8"))
     
 def createControl(img):
-    msg = Twist()
-
-
-    if img is None:
-        print "none"
-        return msg,img
-    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    # define range of red color in HSV
-#    lower_red1 = np.array([300,50,50])
-#    upper_red1 = np.array([360,150,150])
-    lower_red2 = np.array([0,30,30])
-    upper_red2 = np.array([30,255,255])
-#    mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
-    mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
-#    mask = cv2.bitwise_or(mask1, mask2)
-    img = cv2.bitwise_and(img, img, mask=mask2)
+    ##FIXME img is a opencv color img
+    ## please create a image with a line detected.
     
-    edges = cv2.Canny(mask2, 50, 150, apertureSize=3)
-    lines = cv2.HoughLinesP(image=edges, rho=0.02, theta=np.pi/500, threshold=10, maxLineGap=100, minLineLength=300)#,lines=np.array([]), minLineLength=minLineLength,maxLineGap=100)
-    print(lines)
-    if lines is None or len(lines) == 0:
-        return msg,img
-    print(len(lines))
     degrees = []
     for line in lines:
         for x1,y1,x2,y2 in line:
